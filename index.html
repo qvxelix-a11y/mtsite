@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Удостоверение личности</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+}
+.app {
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
+}
+.header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.tabs {
+  display: flex;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.tab.active {
+  background: #fff;
+  font-weight: bold;
+}
+.card {
+  background: #ddd;
+  border-radius: 12px;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.card img {
+  width: 100%;
+  display: none;
+}
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.primary {
+  background: #1f6bff;
+  color: #fff;
+}
+.secondary {
+  background: #fff;
+  border: 1px solid #1f6bff;
+  color: #1f6bff;
+}
+.hidden {
+  display: none;
+}
+.form {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+}
+.form label {
+  font-size: 14px;
+  display: block;
+  margin-top: 12px;
+}
+.form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- Заголовок -->
+  <div class="header">Удостоверение личности</div>
+
+  <!-- Вкладки -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('doc')">Документ</div>
+    <div class="tab" onclick="showTab('info')">Реквизиты</div>
+  </div>
+
+  <!-- Документ -->
+  <div id="doc">
+    <div class="card">
+      <img id="img">
+      <span id="text">Фото не загружено</span>
+    </div>
+
+    <input type="file" id="file" accept="image/*" hidden>
+
+    <button class="btn primary" onclick="file.click()">Загрузить удостоверение</button>
+    <button class="btn primary">Предъявить документ</button>
+    <button class="btn secondary">Отправить документ</button>
+  </div>
+
+  <!-- Реквизиты -->
+  <div id="info" class="hidden">
+    <div class="form">
+      <label>ФИО</label>
+      <input type="text">
+
+      <label>ИИН</label>
+      <input type="text">
+
+      <label>Дата рождения</label>
+      <input type="date">
+
+      <label>Номер документа</label>
+      <input type="text">
+
+      <label>Дата выдачи</label>
+      <input type="date">
+
+      <label>Срок действия</label>
+      <input type="date">
+    </div>
+  </div>
+
+</div>
+
+<script>
+const file = document.getElementById('file');
+const img = document.getElementById('img');
+const text = document.getElementById('text');
+
+file.addEventListener('change', () => {
+  const f = file.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    img.src = r.result;
+    img.style.display = 'block';
+    text.style.display = 'none';
+  };
+  r.readAsDataURL(f);
+});
+
+function showTab(tab) {
+  document.getElementById('doc').classList.add('hidden');
+  document.getElementById('info').classList.add('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+  if (tab === 'doc') {
+    document.getElementById('doc').classList.remove('hidden');
+    document.querySelectorAll('.tab')[0].classList.add('active');
+  } else {
+    document.getElementById('info').classList.remove('hidden');
+    document.querySelectorAll('.tab')[1].classList.add('active');
+  }
+}
+</script>
+
+</body>
+</html>
